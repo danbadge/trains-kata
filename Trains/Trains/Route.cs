@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Trains
 {
@@ -9,6 +10,11 @@ namespace Trains
 			var route = new Route();
 			route.AddRange(this);
 			return route;
+		}
+
+		public int TotalDistance
+		{
+			get { return this.Sum(r => r.Distance); }
 		}
 	}
 }

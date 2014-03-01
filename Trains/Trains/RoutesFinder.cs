@@ -14,7 +14,7 @@ namespace Trains
 
 			foreach (var stations in routes.Select(route => route.ToCharArray()))
 			{
-				_connectedStations.Add(new ConnectedStations(stations[0].ToString(), stations[1].ToString(), Convert.ToInt32(stations[2])));
+				_connectedStations.Add(new ConnectedStations(stations[0].ToString(), stations[1].ToString(), (int)char.GetNumericValue(stations[2])));
 			}
 		}
 
@@ -74,11 +74,13 @@ namespace Trains
 			                                         || char.IsSeparator(r)).ToArray());
 		}
 
-		public Tuple<string,string,int> GetShortestRoute(string start, string end)
+		public Route GetShortestRoute(string start, string end)
 		{
 			var allRoutes = GetRoutes(start, end);
 
-			return new Tuple<string, string,int>("123","123",1);
+			var shortestRoute = allRoutes.OrderBy(r => r.TotalDistance).First();
+
+			return shortestRoute;
 		}
 	}
 }
