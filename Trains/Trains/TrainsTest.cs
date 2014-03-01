@@ -21,5 +21,17 @@ namespace Trains
 
 			Assert.That(distance, Is.EqualTo(9));
 		}
+
+		[Test]
+		public void Should_calculate_the_distance_from_A_to_D()
+		{
+			const string routingData = "AD5";
+
+			var distanceCalculator = new DistanceCalculator(routingData);
+
+			var distance = distanceCalculator.Calculate("A-D");
+
+			Assert.That(distance, Is.EqualTo(5));
+		}
     }
 }
