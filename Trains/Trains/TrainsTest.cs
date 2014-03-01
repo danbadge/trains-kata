@@ -8,30 +8,20 @@ using NUnit.Framework;
 namespace Trains
 {
 	[TestFixture]
-    public class TrainsTest
-    {
-		[Test]
-		public void Should_calculate_the_distance_from_A_to_C_via_B()
+	public class TrainsTest
+	{
+		[TestCase("A-B-C", 9)]
+		[TestCase("A-D", 5)]
+		[TestCase("A-D-C", 13)]
+		public void Given_a_route_to_travel_then_calculate_the_total_distance(string route, int expectedDistance)
 		{
-			const string routingData = "AB5 BC4";
+			const string routingData = "AB5 BC4 DC8 AD5";
 
 			var distanceCalculator = new DistanceCalculator(routingData);
 
-			var distance = distanceCalculator.Calculate("A-B-C");
+			var actualDistance = distanceCalculator.Calculate(route);
 
-			Assert.That(distance, Is.EqualTo(9));
+			Assert.That(actualDistance, Is.EqualTo(expectedDistance));
 		}
-
-		[Test]
-		public void Should_calculate_the_distance_from_A_to_D()
-		{
-			const string routingData = "AD5";
-
-			var distanceCalculator = new DistanceCalculator(routingData);
-
-			var distance = distanceCalculator.Calculate("A-D");
-
-			Assert.That(distance, Is.EqualTo(5));
-		}
-    }
+	}
 }
