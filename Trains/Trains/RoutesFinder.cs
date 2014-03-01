@@ -75,5 +75,12 @@ namespace Trains
 			return new string(routingData.Where(r => char.IsLetter(r)
 			                                         || char.IsSeparator(r)).ToArray());
 		}
+
+		public Tuple<string,string,int> GetShortestRoute(string start, string end)
+		{
+			var allRoutes = GetRoutes(start, end);
+
+			return new Tuple<string, string,int>("123","123",1);
+		}
 	}
 }

@@ -32,6 +32,18 @@ namespace Trains.Tests
 			Assert.That(numberOfRoutes, Is.EqualTo(3));
 		}
 
+		[Test, Ignore]
+		public void Given_a_route_of_A_to_C_then_return_the_shortest_distance_available_to_travel()
+		{
+			const string routingData = "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7";
+
+			var routesFinder = new RoutesFinder(routingData);
+
+			var distance = routesFinder.GetShortestRoute("A", "C").Item3;
+
+			Assert.That(distance, Is.EqualTo(9));
+		}
+
 		[Test]
 		public void Should_stop_searching_for_routes_after_10_stops()
 		{
