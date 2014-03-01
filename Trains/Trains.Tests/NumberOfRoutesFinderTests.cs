@@ -45,6 +45,18 @@ namespace Trains.Tests
 		}
 
 		[Test]
+		public void Given_a_route_of_B_to_B_then_return_the_shortest_distance_available_to_travel()
+		{
+			const string routingData = "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7";
+
+			var routesFinder = new RoutesFinder(routingData);
+
+			var distance = routesFinder.GetShortestRoute("B", "B").TotalDistance;
+
+			Assert.That(distance, Is.EqualTo(9));
+		}
+
+		[Test]
 		public void Should_stop_searching_for_routes_after_10_stops()
 		{
 			const string routingData = "AC5 CA4";
