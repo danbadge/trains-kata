@@ -15,38 +15,11 @@ namespace Trains
 		{
 			const string routingData = "AB5 BC4";
 
-			var distance = CalculateDistance(routingData, "A-B-C");
+			var distanceCalculator = new DistanceCalculator(routingData);
+
+			var distance = distanceCalculator.Calculate("A-B-C");
 
 			Assert.That(distance, Is.EqualTo(9));
-		}
-
-		private int CalculateDistance(string routingData, string route)
-		{
-			var distances = DistanceBetweenStations(routingData);
-
-			var stations = route.Split(Convert.ToChar("-"));
-
-			var distance = 0;
-			for (var i = 1; i < stations.Count(); i++)
-			{
-				var immediateStations = stations[i - 1] + stations[i];
-				distance += distances[immediateStations];
-			}
-
-			return distance;
-		}
-
-		private static Dictionary<string, int> DistanceBetweenStations(string routingData)
-		{
-			var distances = new Dictionary<string, int>();
-			var nodes = routingData.Split(Convert.ToChar(" "));
-			foreach (var node in nodes)
-			{
-				var stations = node.Substring(0, 2);
-				var distance = Convert.ToInt32(node.Substring(2, 1));
-				distances.Add(stations, distance);
-			}
-			return distances;
 		}
     }
 }
