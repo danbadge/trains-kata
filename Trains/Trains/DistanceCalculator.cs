@@ -10,7 +10,7 @@ namespace Trains
 
 		public DistanceCalculator(string routingData)
 		{
-			_distances = StoreDistanceBetweenStations(routingData);
+			_distances = GetDistancesBetweenStations(routingData);
 		}
 
 		public int Calculate(string route)
@@ -27,7 +27,7 @@ namespace Trains
 			return distance;
 		}
 
-		private static Dictionary<string, int> StoreDistanceBetweenStations(string routingData)
+		private static Dictionary<string, int> GetDistancesBetweenStations(string routingData)
 		{
 			var distances = new Dictionary<string, int>();
 			var nodes = routingData.Split(Convert.ToChar(" "));
