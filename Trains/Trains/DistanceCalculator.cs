@@ -21,7 +21,14 @@ namespace Trains
 			for (var i = 1; i < stations.Count(); i++)
 			{
 				var immediateStations = stations[i - 1] + stations[i];
-				distance += _distances[immediateStations];
+				try
+				{
+					distance += _distances[immediateStations];
+				}
+				catch
+				{
+					throw new RouteNotFoundException();
+				}
 			}
 
 			return distance;
