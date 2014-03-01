@@ -57,6 +57,18 @@ namespace Trains.Tests
 		}
 
 		[Test]
+		public void Given_a_route_of_C_to_C_then_return_the_number_of_routes_with_a_distance_less_than_30()
+		{
+			const string routingData = "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7";
+
+			var routesFinder = new RoutesFinder(routingData);
+
+			var numberOfRoutes = routesFinder.GetRoutes("C", "C").WithADistanceLessThan(30);
+
+			Assert.That(numberOfRoutes, Is.EqualTo(7));
+		}
+
+		[Test]
 		public void Should_stop_searching_for_routes_after_10_stops()
 		{
 			const string routingData = "AC5 CA4";

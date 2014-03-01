@@ -15,5 +15,10 @@ namespace Trains
 		{
 			return routes.Count(r => r.Count() == exactStops);
 		}
+
+		public static int WithADistanceLessThan(this List<Route> routes, int maxDistance)
+		{
+			return routes.Count(r => r.TotalDistance < maxDistance);
+		}
 	}
 }
