@@ -6,64 +6,62 @@ namespace Trains
 {
 	public class RoutesFinder
 	{
-		private readonly List<Tuple<string, string>> _routes = new List<Tuple<string, string>>();
+		private readonly Route _connectedStations = new Route();
 	
 		public RoutesFinder(string routingData)
 		{
-			var routingDataWithoutDistance = RemoveDigitsFrom(routingData);
-
-			var routes = routingDataWithoutDistance.Split(Convert.ToChar(" ")).ToArray();
+			var routes = routingData.Split(Convert.ToChar(" ")).ToArray();
 
 			foreach (var stations in routes.Select(route => route.ToCharArray()))
 			{
-				_routes.Add(new Tuple<string, string>(stations[0].ToString(), stations[1].ToString()));
+				_connectedStations.Add(new ConnectedStations(stations[0].ToString(), stations[1].ToString(), Convert.ToInt32(stations[2])));
 			}
 		}
 
-		public List<List<Tuple<string, string>>> GetRoutes(string startStation, string endStation)
+		public List<Route> GetRoutes(string startStation, string endStation)
 		{
-			var possibleRoutes = new List<List<Tuple<string, string>>>();
+			var possibleRoutes = new List<Route>();
 			
-			var startingRoutes =  _routes.Where(r => r.Item1 == startStation);
+			var startingRoutes =  _connectedStations.Where(r => r.StartStation == startStation);
 
 			foreach (var startingRoute in startingRoutes)
 			{
-				var possibleRoute = new List<Tuple<string, string>>
+				var possibleRoute = new Route
 					{
 						startingRoute
 					};
 
-				var routes = FindCompleteRoutes(endStation, startingRoute.Item2, possibleRoute);
+				var routes = FindCompleteRoutes(endStation, startingRoute.EndStation, possibleRoute);
 				possibleRoutes.AddRange(routes);
 			}
 
 			return possibleRoutes;
 		}
 
-		private IEnumerable<List<Tuple<string, string>>> FindCompleteRoutes(string endStation, string nextStation, List<Tuple<string, string>> possibleRoute)
+		private IEnumerable<Route> FindCompleteRoutes(string endStation, string nextStation, Route possibleRoute)
 		{
 			if (possibleRoute.Count() >= 10)
 			{
-				return new List<List<Tuple<string, string>>>();
+				return new List<Route>();
 			}
 
-			var completedRoutes = new List<List<Tuple<string, string>>>();
+			var completedRoutes = new List<Route>();
 
-			var nextRoutes = _routes.Where(r => r.Item1 == nextStation).ToList();
-			var endRoutes = _routes.Where(r => r.Item1 == nextStation && r.Item2 == endStation).ToList();
+			var nextRoutes = _connectedStations.Where(r => r.StartStation == nextStation).ToList();
+			var endRoutes = _connectedStations.Where(r => r.StartStation == nextStation && r.EndStation == endStation).ToList();
 
 			foreach (var endRoute in endRoutes)
 			{
-				var completedRoute = possibleRoute.Select(r => r).ToList();
+				var completedRoute = possibleRoute.Copy();
 				completedRoute.Add(endRoute);
 				completedRoutes.Add(completedRoute);
 			}
 
 			foreach (var nextRoute in nextRoutes)
 			{
-				var anotherPossibleRoute = possibleRoute.Select(r => r).ToList();
+				var anotherPossibleRoute = possibleRoute.Copy();
 				anotherPossibleRoute.Add(nextRoute);
-				var routes = FindCompleteRoutes(endStation, nextRoute.Item2, anotherPossibleRoute);
+				var routes = FindCompleteRoutes(endStation, nextRoute.EndStation, anotherPossibleRoute);
 				completedRoutes.AddRange(routes);
 			}
 

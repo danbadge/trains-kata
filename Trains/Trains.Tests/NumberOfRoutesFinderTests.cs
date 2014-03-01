@@ -69,9 +69,9 @@ namespace Trains.Tests
 			Assert.True(routes.Any(r => OutputRouteAsString(r) == "ACCEEA"));
 		}
 
-		private string OutputRouteAsString(IEnumerable<Tuple<string, string>> route)
+		private string OutputRouteAsString(IEnumerable<ConnectedStations> route)
 		{
-			return route.Aggregate("", (current, tuple) => current + (tuple.Item1 + tuple.Item2));
+			return route.Aggregate("", (current, stations) => current + (stations.StartStation + stations.EndStation));
 		}
 	}
 }
