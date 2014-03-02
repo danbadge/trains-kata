@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BC65903D-3F00-4E03-9B72-F822B57BF649}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Trains</RootNamespace>
     <AssemblyName>Trains</AssemblyName>
@@ -52,6 +52,7 @@
     <Compile Include="RoutesFinderExtensions.cs" />
     <Compile Include="RoutingDataStores.cs" />
     <Compile Include="TestScenarioRunner.cs" />
+    <Compile Include="TrainsConsole.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
