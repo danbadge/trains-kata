@@ -12,6 +12,7 @@ namespace Trains.Tests
 		private TestScenarioRunner _testScenarioRunner;
 		private MockConsole _mockConsole;
 		private ICalculateDistances _distanceCalculator;
+		private IFindRoutes _routesFinder;
 
 		[SetUp]
 		public void Setup()
@@ -19,8 +20,9 @@ namespace Trains.Tests
 			_mockConsole = new MockConsole();
 
 			_distanceCalculator = MockRepository.GenerateStub<ICalculateDistances>();
+			_routesFinder = MockRepository.GenerateStub<IFindRoutes>();
 
-			_testScenarioRunner = new TestScenarioRunner(_mockConsole, _distanceCalculator);
+			_testScenarioRunner = new TestScenarioRunner(_mockConsole, _distanceCalculator, _routesFinder);
 		}
 
 		[Test]
@@ -72,8 +74,17 @@ namespace Trains.Tests
 
 			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #1: 43"));
 		}
-	}
 
+		[Test]
+		public void Should_get_available_routes_for_five_scenarios()
+		{
+			_testScenarioRunner.Run();
+
+			_routesFinder.AssertWasCalled(r => r.GetRoutes(Arg<string>.Is.Anything, Arg<string>.Is.Anything),
+			                             r => r.Repeat.Times(5));
+		}
+	}
+	
 	public class MockConsole : TextWriter
 	{
 		private string _output;

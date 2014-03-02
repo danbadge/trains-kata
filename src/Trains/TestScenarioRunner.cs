@@ -7,11 +7,13 @@ namespace Trains
 	{
 		private readonly TextWriter _console;
 		private readonly ICalculateDistances _distanceCalculator;
+		private IFindRoutes _routeFinder;
 
-		public TestScenarioRunner(TextWriter console, ICalculateDistances distanceCalculator)
+		public TestScenarioRunner(TextWriter console, ICalculateDistances distanceCalculator, IFindRoutes routeFinder)
 		{
 			_console = console;
 			_distanceCalculator = distanceCalculator;
+			_routeFinder = routeFinder;
 		}
 
 		public void Run()
@@ -20,9 +22,9 @@ namespace Trains
 
 			const int scenarioNumber = 1;
 			
-			RunThroughDistanceScenarios(scenarioNumber);
+			RunDistanceScenarios(scenarioNumber);
 
-
+			RunRouteFindingScenarios(scenarioNumber);
 		}
 
 		private void OutputTestScenarioDescriptions()
@@ -40,7 +42,7 @@ namespace Trains
 			               "10.The number of different routes from C to C with a distance of less than 30.\n\n");
 		}
 
-		private void RunThroughDistanceScenarios(int scenarioNumber)
+		private void RunDistanceScenarios(int scenarioNumber)
 		{
 			var distanceScenarios = new List<string>
 				{
@@ -64,6 +66,15 @@ namespace Trains
 				}
 				scenarioNumber++;
 			}
+		}
+
+		private void RunRouteFindingScenarios(int scenarioNumber)
+		{
+			_routeFinder.GetRoutes("C", "C");
+			_routeFinder.GetRoutes("A", "C");
+			_routeFinder.GetRoutes("A", "C");
+			_routeFinder.GetRoutes("B", "B");
+			_routeFinder.GetRoutes("C", "C");
 		}
 
 		private void OutputScenarioResult(int scenarioNumber, string result)

@@ -4,7 +4,12 @@ using System.Linq;
 
 namespace Trains
 {
-	public class RoutesFinder
+	public interface IFindRoutes
+	{
+		List<Route> GetRoutes(string startStation, string endStation);
+	}
+
+	public class RoutesFinder : IFindRoutes
 	{
 		private readonly Route _connectedStations = new Route();
 	
