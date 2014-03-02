@@ -11,7 +11,7 @@ namespace Trains.Tests
 		[Test]
 		public void Should_throw_exception_if_routing_data_can_not_be_found()
 		{
-			var routingDataStore = new RoutingDataStores();
+			var routingDataStore = new RoutingDataStore();
 
 			var exception = Assert.Throws<FileNotFoundException>(routingDataStore.Load);
 
@@ -23,7 +23,7 @@ namespace Trains.Tests
 		{
 			File.WriteAllText("routing-data.txt", "");
 
-			var routingDataStore = new RoutingDataStores();
+			var routingDataStore = new RoutingDataStore();
 
 			var exception = Assert.Throws<Exception>(routingDataStore.Load);
 
@@ -33,9 +33,9 @@ namespace Trains.Tests
 		[Test]
 		public void Should_populate_connected_stations_from_data_file()
 		{
-			File.WriteAllText("routing-data.txt", "AB4 BC5 DC6");
+			File.WriteAllText("routing-data.txt", "AB4, BC5, DC6");
 
-			var routingDataStore = new RoutingDataStores();
+			var routingDataStore = new RoutingDataStore();
 
 			routingDataStore.Load();
 

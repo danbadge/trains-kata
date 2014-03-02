@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Trains
 {
-	public class RoutingDataStores
+	public class RoutingDataStore
 	{
 		public List<ConnectedStations> ConnectedStations { get; private set; }
 
@@ -24,7 +24,7 @@ namespace Trains
 			if (String.IsNullOrEmpty(routingData))
 				throw new Exception("Routing data file contained no data");
 
-			var routes = routingData.Split(Convert.ToChar(" ")).ToArray();
+			var routes = routingData.Split(Convert.ToChar(",")).Select(r => r.Trim()).ToArray();
 
 			foreach (var stations in routes.Select(route => route.ToCharArray()))
 			{

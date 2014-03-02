@@ -142,19 +142,19 @@ namespace Trains.Tests
 		}
 
 		[Test]
-		public void Should_output_the_number_of_available_routes_for_scenario_10()
+		public void Should_output_the_number_of_available_routes_with_a_distance_under_30_for_scenario_10()
 		{
 			var availableRoute = new List<Route>
 				{
 					new Route { new ConnectedStations("A", "B", 5) },
-					new Route { new ConnectedStations("B", "B", 5) }
+					new Route { new ConnectedStations("B", "B", 40) }
 				};
 
 			_routesFinder.Stub(r => r.GetRoutes("C", "C")).Return(availableRoute).Repeat.Any();
 
 			_testScenarioRunner.Run();
 
-			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #10: 2"));
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #10: 1"));
 		}
 	}
 	

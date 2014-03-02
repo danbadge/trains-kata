@@ -50,9 +50,14 @@
     <Compile Include="RouteNotFoundException.cs" />
     <Compile Include="RoutesFinder.cs" />
     <Compile Include="RoutesFinderExtensions.cs" />
-    <Compile Include="RoutingDataStores.cs" />
+    <Compile Include="RoutingDataStore.cs" />
     <Compile Include="TestScenarioRunner.cs" />
     <Compile Include="TrainsConsole.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="routing-data.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,7 +8,7 @@ namespace Trains
 	{
 		private readonly TextWriter _console;
 		private readonly ICalculateDistances _distanceCalculator;
-		private IFindRoutes _routeFinder;
+		private readonly IFindRoutes _routeFinder;
 
 		public TestScenarioRunner(TextWriter console, ICalculateDistances distanceCalculator, IFindRoutes routeFinder)
 		{
@@ -82,7 +82,7 @@ namespace Trains
 			var shortestDistance9 = _routeFinder.GetShortestRoute("B", "B").TotalDistance;
 			OutputScenarioResult(9, shortestDistance9);
 
-			var numberOfAvailableRoutes = _routeFinder.GetRoutes("C", "C").Count;
+			var numberOfAvailableRoutes = _routeFinder.GetRoutes("C", "C").WithADistanceLessThan(30);
 			OutputScenarioResult(10, numberOfAvailableRoutes);
 		}
 
