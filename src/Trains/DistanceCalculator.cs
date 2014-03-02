@@ -4,7 +4,12 @@ using System.Linq;
 
 namespace Trains
 {
-	public class DistanceCalculator
+	public interface ICalculateDistances
+	{
+		int Calculate(string route);
+	}
+
+	public class DistanceCalculator : ICalculateDistances
 	{
 		private readonly Dictionary<string, int> _distances;
 
