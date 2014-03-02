@@ -11,7 +11,7 @@ namespace Trains.Tests
 		[Test]
 		public void Given_a_route_of_C_to_C_then_return_the_number_of_routes_with_no_more_than_3_stops()
 		{
-			const string routingData = "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7";
+			var routingData = TestData.ConnectedStations;
 
 			var routesFinder = new RoutesFinder(routingData);
 
@@ -23,7 +23,7 @@ namespace Trains.Tests
 		[Test]
 		public void Given_a_route_of_A_to_C_then_return_the_number_of_routes_with_exactly_4_stops()
 		{
-			const string routingData = "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7";
+			var routingData = TestData.ConnectedStations;
 
 			var routesFinder = new RoutesFinder(routingData);
 
@@ -35,7 +35,7 @@ namespace Trains.Tests
 		[Test]
 		public void Given_a_route_of_A_to_C_then_return_the_shortest_distance_available_to_travel()
 		{
-			const string routingData = "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7";
+			var routingData = TestData.ConnectedStations;
 
 			var routesFinder = new RoutesFinder(routingData);
 
@@ -47,7 +47,7 @@ namespace Trains.Tests
 		[Test]
 		public void Given_a_route_of_B_to_B_then_return_the_shortest_distance_available_to_travel()
 		{
-			const string routingData = "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7";
+			var routingData = TestData.ConnectedStations;
 
 			var routesFinder = new RoutesFinder(routingData);
 
@@ -59,7 +59,7 @@ namespace Trains.Tests
 		[Test]
 		public void Given_a_route_of_C_to_C_then_return_the_number_of_routes_with_a_distance_less_than_30()
 		{
-			const string routingData = "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7";
+			var routingData = TestData.ConnectedStations;
 
 			var routesFinder = new RoutesFinder(routingData);
 
@@ -71,7 +71,11 @@ namespace Trains.Tests
 		[Test]
 		public void Should_stop_searching_for_routes_after_10_stops()
 		{
-			const string routingData = "AC5 CA4";
+			var routingData = new List<ConnectedStations>
+				{
+					new ConnectedStations("A", "C", 5),
+					new ConnectedStations("C", "A", 4)
+				};
 
 			var routesFinder = new RoutesFinder(routingData);
 
@@ -84,7 +88,13 @@ namespace Trains.Tests
 		[Test]
 		public void Should_try_a_similar_route_after_exhausting_one_path()
 		{
-			const string routingData = "AC5 CA4 CE5 EA3";
+			var routingData = new List<ConnectedStations>
+				{
+					new ConnectedStations("A", "C", 5),
+					new ConnectedStations("C", "A", 4),
+					new ConnectedStations("C", "E", 5),
+					new ConnectedStations("E", "A", 3)
+				};
 
 			var routesFinder = new RoutesFinder(routingData);
 

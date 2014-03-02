@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Trains
@@ -12,16 +11,11 @@ namespace Trains
 
 	public class RoutesFinder : IFindRoutes
 	{
-		private readonly Route _connectedStations = new Route();
-	
-		public RoutesFinder(string routingData)
-		{
-			var routes = routingData.Split(Convert.ToChar(" ")).ToArray();
+		private readonly List<ConnectedStations> _connectedStations;
 
-			foreach (var stations in routes.Select(route => route.ToCharArray()))
-			{
-				_connectedStations.Add(new ConnectedStations(stations[0].ToString(), stations[1].ToString(), (int)char.GetNumericValue(stations[2])));
-			}
+		public RoutesFinder(List<ConnectedStations> connectedStations)
+		{
+			_connectedStations = connectedStations;
 		}
 
 		public Route GetShortestRoute(string start, string end)
