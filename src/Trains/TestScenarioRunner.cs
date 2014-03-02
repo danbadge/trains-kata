@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace Trains
@@ -20,11 +21,9 @@ namespace Trains
 		{
 			OutputTestScenarioDescriptions();
 
-			const int scenarioNumber = 1;
-			
-			RunDistanceScenarios(scenarioNumber);
+			RunDistanceScenarios();
 
-			RunRouteFindingScenarios(scenarioNumber);
+			RunRouteFindingScenarios();
 		}
 
 		private void OutputTestScenarioDescriptions()
@@ -42,7 +41,7 @@ namespace Trains
 			               "10.The number of different routes from C to C with a distance of less than 30.\n\n");
 		}
 
-		private void RunDistanceScenarios(int scenarioNumber)
+		private void RunDistanceScenarios()
 		{
 			var distanceScenarios = new List<string>
 				{
@@ -53,12 +52,13 @@ namespace Trains
 					"A-E-D"
 				};
 
+			var scenarioNumber = 0;
 			foreach (var distanceScenario in distanceScenarios)
 			{
 				try
 				{
 					var distance = _distanceCalculator.Calculate(distanceScenario);
-					OutputScenarioResult(scenarioNumber, distance.ToString());
+					OutputScenarioResult(scenarioNumber, distance);
 				}
 				catch (RouteNotFoundException exception)
 				{
@@ -68,13 +68,22 @@ namespace Trains
 			}
 		}
 
-		private void RunRouteFindingScenarios(int scenarioNumber)
+		private void RunRouteFindingScenarios()
 		{
-			_routeFinder.GetRoutes("C", "C");
-			_routeFinder.GetRoutes("A", "C");
+			var routesWithMaxStops = _routeFinder.GetRoutes("C", "C").WithMaxStops(3);
+			OutputScenarioResult(6, routesWithMaxStops);
+			
+			var routesWithExactStops = _routeFinder.GetRoutes("A", "C").WithExactStops(4);
+			OutputScenarioResult(7, routesWithExactStops);
+
 			_routeFinder.GetRoutes("A", "C");
 			_routeFinder.GetRoutes("B", "B");
 			_routeFinder.GetRoutes("C", "C");
+		}
+
+		private void OutputScenarioResult(int scenarioNumber, int results)
+		{
+			OutputScenarioResult(scenarioNumber, results.ToString(CultureInfo.InvariantCulture));
 		}
 
 		private void OutputScenarioResult(int scenarioNumber, string result)

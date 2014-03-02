@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
@@ -21,6 +22,8 @@ namespace Trains.Tests
 
 			_distanceCalculator = MockRepository.GenerateStub<ICalculateDistances>();
 			_routesFinder = MockRepository.GenerateStub<IFindRoutes>();
+
+			_routesFinder.Stub(r => r.GetRoutes(null, null)).IgnoreArguments().Return(new List<Route>());
 
 			_testScenarioRunner = new TestScenarioRunner(_mockConsole, _distanceCalculator, _routesFinder);
 		}
@@ -82,6 +85,45 @@ namespace Trains.Tests
 
 			_routesFinder.AssertWasCalled(r => r.GetRoutes(Arg<string>.Is.Anything, Arg<string>.Is.Anything),
 			                             r => r.Repeat.Times(5));
+		}
+
+		[Test]
+		public void Should_output_number_of_available_routes_with_no_more_than_3_stops_for_scenario_6()
+		{
+			var availableRoute = new List<Route>
+				{
+					new Route
+						{
+							new ConnectedStations("A", "B", 5)
+						}
+				};
+
+			_routesFinder.Stub(r => r.GetRoutes("C", "C")).Return(availableRoute).Repeat.Any();
+
+			_testScenarioRunner.Run();
+
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #6: 1"));
+		}
+
+		[Test]
+		public void Should_output_number_of_available_routes_with_exactly_4_stops_for_scenario_7()
+		{
+			var availableRoute = new List<Route>
+				{
+					new Route
+						{
+							new ConnectedStations("A", "B", 5),
+							new ConnectedStations("A", "B", 5),
+							new ConnectedStations("A", "B", 5),
+							new ConnectedStations("A", "B", 5),
+						}
+				};
+
+			_routesFinder.Stub(r => r.GetRoutes("A", "C")).Return(availableRoute).Repeat.Any();
+
+			_testScenarioRunner.Run();
+
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #7: 1"));
 		}
 	}
 	
