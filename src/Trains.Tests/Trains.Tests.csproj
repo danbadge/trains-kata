@@ -46,6 +46,7 @@
     <Compile Include="NumberOfRoutesFinderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutingDataStoreTests.cs" />
+    <Compile Include="TestScenarioRunnerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
