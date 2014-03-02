@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BC65903D-3F00-4E03-9B72-F822B57BF649}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Trains</RootNamespace>
     <AssemblyName>Trains</AssemblyName>
@@ -30,7 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,10 +50,7 @@
     <Compile Include="RouteNotFoundException.cs" />
     <Compile Include="RoutesFinder.cs" />
     <Compile Include="RoutesFinderExtensions.cs" />
-    <Compile Include="TrainsConsole.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="routing-data.txt" />
+    <Compile Include="RoutingDataStores.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

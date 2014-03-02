@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trains
+namespace TrainsConsole
 {
-	internal class TrainsConsole
+	class Program
 	{
-		private static void Main(string[] args)
+		static void Main(string[] args)
 		{
-			// Call your function here. 
 		}
 	}
 }
