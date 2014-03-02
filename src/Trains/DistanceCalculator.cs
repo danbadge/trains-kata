@@ -11,11 +11,11 @@ namespace Trains
 
 	public class DistanceCalculator : ICalculateDistances
 	{
-		private readonly Dictionary<string, int> _distances;
+		private readonly List<ConnectedStations> _routingData;
 
-		public DistanceCalculator(string routingData)
+		public DistanceCalculator(List<ConnectedStations> routingData)
 		{
-			_distances = GetDistancesBetweenStations(routingData);
+			_routingData = routingData;
 		}
 
 		public int Calculate(string route)
@@ -25,28 +25,17 @@ namespace Trains
 			var distance = 0;
 			for (var i = 1; i < stations.Count(); i++)
 			{
-				var immediateStations = stations[i - 1] + stations[i];
+				var startStation = stations[i - 1];
+				var endStation =stations[i];
 
-				if (!_distances.ContainsKey(immediateStations))
+				if (!_routingData.Any(r => r.StartStation == startStation && r.EndStation == endStation))
 					throw new RouteNotFoundException();
 
-				distance += _distances[immediateStations];
+				distance += _routingData.First(r => r.StartStation == startStation
+				                                    && r.EndStation == endStation).Distance;
 			}
 
 			return distance;
-		}
-
-		private static Dictionary<string, int> GetDistancesBetweenStations(string routingData)
-		{
-			var distances = new Dictionary<string, int>();
-			var nodes = routingData.Split(Convert.ToChar(" "));
-			foreach (var node in nodes)
-			{
-				var stations = node.Substring(0, 2);
-				var distance = Convert.ToInt32(node.Substring(2, 1));
-				distances.Add(stations, distance);
-			}
-			return distances;
 		}
 	}
 }
