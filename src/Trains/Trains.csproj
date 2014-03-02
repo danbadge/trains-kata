@@ -51,6 +51,7 @@
     <Compile Include="RoutesFinder.cs" />
     <Compile Include="RoutesFinderExtensions.cs" />
     <Compile Include="RoutingDataStores.cs" />
+    <Compile Include="TestScenarioRunner.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
