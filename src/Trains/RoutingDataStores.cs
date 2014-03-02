@@ -16,7 +16,13 @@ namespace Trains
 
 			const string fileLocation = "routing-data.txt";
 
+			if (!File.Exists(fileLocation))
+				throw new FileNotFoundException("Routing data file could not be found");
+			
 			var routingData = File.ReadAllText(fileLocation);
+
+			if (String.IsNullOrEmpty(routingData))
+				throw new Exception("Routing data file contained no data");
 
 			var routes = routingData.Split(Convert.ToChar(" ")).ToArray();
 

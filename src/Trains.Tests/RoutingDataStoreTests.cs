@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
@@ -12,13 +13,27 @@ namespace Trains.Tests
 		{
 			var routingDataStore = new RoutingDataStores();
 
-			Assert.Throws<FileNotFoundException>(routingDataStore.Load);
+			var exception = Assert.Throws<FileNotFoundException>(routingDataStore.Load);
+
+			Assert.That(exception.Message, Is.EqualTo("Routing data file could not be found"));
+		}
+
+		[Test]
+		public void Should_throw_exception_if_routing_data_file_is_empty()
+		{
+			File.WriteAllText("routing-data.txt", "");
+
+			var routingDataStore = new RoutingDataStores();
+
+			var exception = Assert.Throws<Exception>(routingDataStore.Load);
+
+			Assert.That(exception.Message, Is.EqualTo("Routing data file contained no data"));
 		}
 
 		[Test]
 		public void Should_populate_connected_stations_from_data_file()
 		{
-			File.WriteAllText("routing-data.txt", "AB4 BC5");
+			File.WriteAllText("routing-data.txt", "AB4 BC5 DC6");
 
 			var routingDataStore = new RoutingDataStores();
 
@@ -28,6 +43,8 @@ namespace Trains.Tests
 			Assert.That(firstConnectedStation.StartStation, Is.EqualTo("A"));
 			Assert.That(firstConnectedStation.EndStation, Is.EqualTo("B"));
 			Assert.That(firstConnectedStation.Distance, Is.EqualTo(4));
+
+			Assert.That(routingDataStore.ConnectedStations.Count(), Is.EqualTo(3));
 		}
 
 		[TearDown]
