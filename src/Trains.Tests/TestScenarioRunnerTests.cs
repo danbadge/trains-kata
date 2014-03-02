@@ -24,6 +24,7 @@ namespace Trains.Tests
 			_routesFinder = MockRepository.GenerateStub<IFindRoutes>();
 
 			_routesFinder.Stub(r => r.GetRoutes(null, null)).IgnoreArguments().Return(new List<Route>());
+			_routesFinder.Stub(r => r.GetShortestRoute(null, null)).IgnoreArguments().Return(new Route());
 
 			_testScenarioRunner = new TestScenarioRunner(_mockConsole, _distanceCalculator, _routesFinder);
 		}
@@ -84,7 +85,7 @@ namespace Trains.Tests
 			_testScenarioRunner.Run();
 
 			_routesFinder.AssertWasCalled(r => r.GetRoutes(Arg<string>.Is.Anything, Arg<string>.Is.Anything),
-			                             r => r.Repeat.Times(5));
+			                             r => r.Repeat.Times(3));
 		}
 
 		[Test]
@@ -92,10 +93,7 @@ namespace Trains.Tests
 		{
 			var availableRoute = new List<Route>
 				{
-					new Route
-						{
-							new ConnectedStations("A", "B", 5)
-						}
+					new Route { new ConnectedStations("A", "B", 5) }
 				};
 
 			_routesFinder.Stub(r => r.GetRoutes("C", "C")).Return(availableRoute).Repeat.Any();
@@ -124,6 +122,39 @@ namespace Trains.Tests
 			_testScenarioRunner.Run();
 
 			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #7: 1"));
+		}
+
+		[Test]
+		public void Should_output_the_route_with_the_shortest_distance_for_scenarios_8_and_9()
+		{
+			var route = new Route
+				{
+					new ConnectedStations("B", "B", 10),
+					new ConnectedStations("B", "B", 4),
+				};
+
+			_routesFinder.Stub(r => r.GetShortestRoute(null, null)).IgnoreArguments().Return(route).Repeat.Any();
+
+			_testScenarioRunner.Run();
+
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #8: 14"));
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #9: 14"));
+		}
+
+		[Test]
+		public void Should_output_the_number_of_available_routes_for_scenario_10()
+		{
+			var availableRoute = new List<Route>
+				{
+					new Route { new ConnectedStations("A", "B", 5) },
+					new Route { new ConnectedStations("B", "B", 5) }
+				};
+
+			_routesFinder.Stub(r => r.GetRoutes("C", "C")).Return(availableRoute).Repeat.Any();
+
+			_testScenarioRunner.Run();
+
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #10: 2"));
 		}
 	}
 	

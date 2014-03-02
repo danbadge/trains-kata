@@ -7,6 +7,7 @@ namespace Trains
 	public interface IFindRoutes
 	{
 		List<Route> GetRoutes(string startStation, string endStation);
+		Route GetShortestRoute(string startStation, string endStation);
 	}
 
 	public class RoutesFinder : IFindRoutes
@@ -21,6 +22,15 @@ namespace Trains
 			{
 				_connectedStations.Add(new ConnectedStations(stations[0].ToString(), stations[1].ToString(), (int)char.GetNumericValue(stations[2])));
 			}
+		}
+
+		public Route GetShortestRoute(string start, string end)
+		{
+			var allRoutes = GetRoutes(start, end);
+
+			var shortestRoute = allRoutes.OrderBy(r => r.TotalDistance).First();
+
+			return shortestRoute;
 		}
 
 		public List<Route> GetRoutes(string startStation, string endStation)
@@ -71,21 +81,6 @@ namespace Trains
 			}
 
 			return completedRoutes;
-		}
-
-		private static string RemoveDigitsFrom(string routingData)
-		{
-			return new string(routingData.Where(r => char.IsLetter(r)
-			                                         || char.IsSeparator(r)).ToArray());
-		}
-
-		public Route GetShortestRoute(string start, string end)
-		{
-			var allRoutes = GetRoutes(start, end);
-
-			var shortestRoute = allRoutes.OrderBy(r => r.TotalDistance).First();
-
-			return shortestRoute;
 		}
 	}
 }

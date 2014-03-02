@@ -76,9 +76,14 @@ namespace Trains
 			var routesWithExactStops = _routeFinder.GetRoutes("A", "C").WithExactStops(4);
 			OutputScenarioResult(7, routesWithExactStops);
 
-			_routeFinder.GetRoutes("A", "C");
-			_routeFinder.GetRoutes("B", "B");
-			_routeFinder.GetRoutes("C", "C");
+			var shortestDistance8 = _routeFinder.GetShortestRoute("A", "C").TotalDistance;
+			OutputScenarioResult(8, shortestDistance8);
+
+			var shortestDistance9 = _routeFinder.GetShortestRoute("B", "B").TotalDistance;
+			OutputScenarioResult(9, shortestDistance9);
+
+			var numberOfAvailableRoutes = _routeFinder.GetRoutes("C", "C").Count;
+			OutputScenarioResult(10, numberOfAvailableRoutes);
 		}
 
 		private void OutputScenarioResult(int scenarioNumber, int results)
