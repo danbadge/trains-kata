@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains", "Trains\Trains.csproj", "{BC65903D-3F00-4E03-9B72-F822B57BF649}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains", "src\Trains\Trains.csproj", "{BC65903D-3F00-4E03-9B72-F822B57BF649}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains.Tests", "Trains.Tests\Trains.Tests.csproj", "{B1EA0716-7788-4803-A075-38C3C69B9D98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains.Tests", "src\Trains.Tests\Trains.Tests.csproj", "{B1EA0716-7788-4803-A075-38C3C69B9D98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
