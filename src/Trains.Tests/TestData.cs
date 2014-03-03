@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Trains.Domain;
 
 namespace Trains.Tests
 {

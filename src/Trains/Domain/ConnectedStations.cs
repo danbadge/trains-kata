@@ -1,4 +1,4 @@
-﻿namespace Trains
+﻿namespace Trains.Domain
 {
 	public class ConnectedStations
 	{

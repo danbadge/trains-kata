@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Trains.Domain;
 
 namespace Trains.Tests
 {

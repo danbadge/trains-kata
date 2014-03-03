@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
+using Trains.Domain;
 
 namespace Trains.Tests
 {

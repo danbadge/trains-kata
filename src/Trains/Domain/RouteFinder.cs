@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Trains
+namespace Trains.Domain
 {
 	public interface IFindRoutes
 	{
