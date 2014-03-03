@@ -11,7 +11,7 @@ namespace Trains
 
 			var connectedStations = routingDataStore.ConnectedStations;
 			var distanceCalculator = new DistanceCalculator(connectedStations);
-			var routesFinder = new RoutesFinder(connectedStations);
+			var routesFinder = new RouteFinder(connectedStations);
 
 			var testScenarioRunner = new TestScenarioRunner(Console.Out, distanceCalculator, routesFinder);
 

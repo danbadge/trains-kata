@@ -9,11 +9,11 @@ namespace Trains
 		Route GetShortestRoute(string startStation, string endStation);
 	}
 
-	public class RoutesFinder : IFindRoutes
+	public class RouteFinder : IFindRoutes
 	{
 		private readonly List<ConnectedStations> _connectedStations;
 
-		public RoutesFinder(List<ConnectedStations> connectedStations)
+		public RouteFinder(List<ConnectedStations> connectedStations)
 		{
 			_connectedStations = connectedStations;
 		}

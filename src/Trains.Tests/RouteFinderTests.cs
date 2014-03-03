@@ -6,14 +6,14 @@ using NUnit.Framework;
 namespace Trains.Tests
 {
 	[TestFixture]
-	public class NumberOfRoutesFinderTests
+	public class RouteFinderTests
 	{
 		[Test]
 		public void Given_a_route_of_C_to_C_then_return_the_number_of_routes_with_no_more_than_3_stops()
 		{
 			var routingData = TestData.ConnectedStations;
 
-			var routesFinder = new RoutesFinder(routingData);
+			var routesFinder = new RouteFinder(routingData);
 
 			var numberOfRoutes = routesFinder.GetRoutes("C", "C").WithMaxStops(3);
 
@@ -25,7 +25,7 @@ namespace Trains.Tests
 		{
 			var routingData = TestData.ConnectedStations;
 
-			var routesFinder = new RoutesFinder(routingData);
+			var routesFinder = new RouteFinder(routingData);
 
 			var numberOfRoutes = routesFinder.GetRoutes("A", "C").WithExactStops(4);
 
@@ -37,7 +37,7 @@ namespace Trains.Tests
 		{
 			var routingData = TestData.ConnectedStations;
 
-			var routesFinder = new RoutesFinder(routingData);
+			var routesFinder = new RouteFinder(routingData);
 
 			var distance = routesFinder.GetShortestRoute("A", "C").TotalDistance;
 
@@ -49,7 +49,7 @@ namespace Trains.Tests
 		{
 			var routingData = TestData.ConnectedStations;
 
-			var routesFinder = new RoutesFinder(routingData);
+			var routesFinder = new RouteFinder(routingData);
 
 			var distance = routesFinder.GetShortestRoute("B", "B").TotalDistance;
 
@@ -61,7 +61,7 @@ namespace Trains.Tests
 		{
 			var routingData = TestData.ConnectedStations;
 
-			var routesFinder = new RoutesFinder(routingData);
+			var routesFinder = new RouteFinder(routingData);
 
 			var numberOfRoutes = routesFinder.GetRoutes("C", "C").WithADistanceLessThan(30);
 
@@ -77,7 +77,7 @@ namespace Trains.Tests
 					new ConnectedStations("C", "A", 4)
 				};
 
-			var routesFinder = new RoutesFinder(routingData);
+			var routesFinder = new RouteFinder(routingData);
 
 			var routes = routesFinder.GetRoutes("A", "A");
 
@@ -96,7 +96,7 @@ namespace Trains.Tests
 					new ConnectedStations("E", "A", 3)
 				};
 
-			var routesFinder = new RoutesFinder(routingData);
+			var routesFinder = new RouteFinder(routingData);
 
 			var routes = routesFinder.GetRoutes("A", "A");
 			
