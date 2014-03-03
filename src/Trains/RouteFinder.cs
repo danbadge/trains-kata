@@ -29,38 +29,51 @@ namespace Trains
 
 		public List<Route> GetRoutes(string startStation, string endStation)
 		{
-			var completedRoutes = FindCompleteRoutes(startStation, endStation, new Route());
-			return completedRoutes;
+			return GetCompleteRoutes(startStation, endStation, new Route());
 		}
 
-		private List<Route> FindCompleteRoutes(string nextStation, string endStation, Route possibleRoute)
+		private List<Route> GetCompleteRoutes(string nextStation, string endStation, Route possibleRoute)
 		{
 			if (possibleRoute.Count() >= 10)
 				return new List<Route>();
 
+			var allRoutes = new List<Route>();
+			allRoutes.AddRange(GetAnyCompletedRoutes(nextStation, endStation, possibleRoute));
+			allRoutes.AddRange(FollowAnyOtherPotentialRoutesAndReturnCompletedRoutes(nextStation, endStation, possibleRoute));
+			return allRoutes;
+		}
+
+		private IEnumerable<Route> FollowAnyOtherPotentialRoutesAndReturnCompletedRoutes(string nextStation, string endStation, Route routeTaken)
+		{
 			var completedRoutes = new List<Route>();
 
-			var finishedRoutes = _connectedStations
-				.Where(r => r.StartStation == nextStation
-				            && r.EndStation == endStation).ToList();
-
-			foreach (var finishedRoute in finishedRoutes)
+			var nextConnections = _connectedStations.Where(r => r.StartStation == nextStation).ToList();
+			foreach (var nextConnection in nextConnections)
 			{
-				var completedRoute = possibleRoute.Copy();
-				completedRoute.Add(finishedRoute);
-				completedRoutes.Add(completedRoute);
-			}
+				var potentialRoute = routeTaken.Copy();
+				potentialRoute.Add(nextConnection);
 
-			var nextRoutes = _connectedStations.Where(r => r.StartStation == nextStation).ToList();
-			foreach (var nextRoute in nextRoutes)
-			{
-				var anotherPossibleRoute = possibleRoute.Copy();
-				anotherPossibleRoute.Add(nextRoute);
-
-				var routes = FindCompleteRoutes(nextRoute.EndStation, endStation, anotherPossibleRoute);
+				var routes = GetCompleteRoutes(nextConnection.EndStation, endStation, potentialRoute);
 				completedRoutes.AddRange(routes);
 			}
 
+			return completedRoutes;
+		}
+
+		private IEnumerable<Route> GetAnyCompletedRoutes(string nextStation, string endStation, Route routeTaken)
+		{
+			var completedRoutes = new List<Route>();
+
+			var finalConnections = _connectedStations
+				.Where(r => r.StartStation == nextStation
+				            && r.EndStation == endStation).ToList();
+
+			foreach (var finalConnection in finalConnections)
+			{
+				var completedRoute = routeTaken.Copy();
+				completedRoute.Add(finalConnection);
+				completedRoutes.Add(completedRoute);
+			}
 			return completedRoutes;
 		}
 	}
