@@ -11,6 +11,7 @@ namespace Trains
 
 	public class RouteFinder : IFindRoutes
 	{
+		private const int MaxNumberOfStations = 10;
 		private readonly List<ConnectedStations> _connectedStations;
 
 		public RouteFinder(List<ConnectedStations> connectedStations)
@@ -34,16 +35,21 @@ namespace Trains
 
 		private List<Route> GetCompleteRoutes(string nextStation, string endStation, Route possibleRoute)
 		{
-			if (possibleRoute.Count() >= 10)
+			if (possibleRoute.Count() >= MaxNumberOfStations)
 				return new List<Route>();
 
 			var allRoutes = new List<Route>();
-			allRoutes.AddRange(GetAnyCompletedRoutes(nextStation, endStation, possibleRoute));
-			allRoutes.AddRange(FollowAnyOtherPotentialRoutesAndReturnCompletedRoutes(nextStation, endStation, possibleRoute));
+
+			var completedRoutes = GetAnyCompletedRoutes(nextStation, endStation, possibleRoute);
+			allRoutes.AddRange(completedRoutes);
+
+			var longerCompletedRoutes = GetAnyCompletedRoutesBeyondImmediateStations(nextStation, endStation, possibleRoute);
+			allRoutes.AddRange(longerCompletedRoutes);
+
 			return allRoutes;
 		}
 
-		private IEnumerable<Route> FollowAnyOtherPotentialRoutesAndReturnCompletedRoutes(string nextStation, string endStation, Route routeTaken)
+		private IEnumerable<Route> GetAnyCompletedRoutesBeyondImmediateStations(string nextStation, string endStation, Route routeTaken)
 		{
 			var completedRoutes = new List<Route>();
 
