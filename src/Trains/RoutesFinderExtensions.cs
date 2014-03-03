@@ -6,19 +6,19 @@ namespace Trains
 {
 	public static class RoutesFinderExtensions
 	{
-		public static int WithMaxStops(this List<Route> routes, int maxStops)
+		public static List<Route> WithMaxStops(this List<Route> routes, int maxStops)
 		{
-			return routes.Count(r => r.Count() <= maxStops);
+			return routes.Where(r => r.Count() <= maxStops).ToList();
 		}
 
-		public static int WithExactStops(this List<Route> routes, int exactStops)
+		public static List<Route> WithExactStops(this List<Route> routes, int exactStops)
 		{
-			return routes.Count(r => r.Count() == exactStops);
+			return routes.Where(r => r.Count() == exactStops).ToList();
 		}
 
-		public static int WithADistanceLessThan(this List<Route> routes, int maxDistance)
+		public static List<Route> WithADistanceLessThan(this List<Route> routes, int maxDistance)
 		{
-			return routes.Count(r => r.TotalDistance < maxDistance);
+			return routes.Where(r => r.TotalDistance < maxDistance).ToList();
 		}
 	}
 }

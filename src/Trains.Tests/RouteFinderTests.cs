@@ -15,7 +15,7 @@ namespace Trains.Tests
 
 			var routesFinder = new RouteFinder(routingData);
 
-			var numberOfRoutes = routesFinder.GetRoutes("C", "C").WithMaxStops(3);
+			var numberOfRoutes = routesFinder.GetRoutes("C", "C").WithMaxStops(3).Count();
 
 			Assert.That(numberOfRoutes, Is.EqualTo(2));
 		}
@@ -27,7 +27,7 @@ namespace Trains.Tests
 
 			var routesFinder = new RouteFinder(routingData);
 
-			var numberOfRoutes = routesFinder.GetRoutes("A", "C").WithExactStops(4);
+			var numberOfRoutes = routesFinder.GetRoutes("A", "C").WithExactStops(4).Count();
 
 			Assert.That(numberOfRoutes, Is.EqualTo(3));
 		}
@@ -63,7 +63,7 @@ namespace Trains.Tests
 
 			var routesFinder = new RouteFinder(routingData);
 
-			var numberOfRoutes = routesFinder.GetRoutes("C", "C").WithADistanceLessThan(30);
+			var numberOfRoutes = routesFinder.GetRoutes("C", "C").WithADistanceLessThan(30).Count();
 
 			Assert.That(numberOfRoutes, Is.EqualTo(7));
 		}
