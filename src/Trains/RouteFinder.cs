@@ -29,48 +29,35 @@ namespace Trains
 
 		public List<Route> GetRoutes(string startStation, string endStation)
 		{
-			var possibleRoutes = new List<Route>();
-			
-			var startingRoutes =  _connectedStations.Where(r => r.StartStation == startStation);
-
-			foreach (var startingRoute in startingRoutes)
-			{
-				var possibleRoute = new Route
-					{
-						startingRoute
-					};
-
-				var routes = FindCompleteRoutes(endStation, startingRoute.EndStation, possibleRoute);
-				possibleRoutes.AddRange(routes);
-			}
-
-			return possibleRoutes;
+			var completedRoutes = FindCompleteRoutes(startStation, endStation, new Route());
+			return completedRoutes;
 		}
 
-		private IEnumerable<Route> FindCompleteRoutes(string endStation, string nextStation, Route possibleRoute)
+		private List<Route> FindCompleteRoutes(string nextStation, string endStation, Route possibleRoute)
 		{
 			if (possibleRoute.Count() >= 10)
-			{
 				return new List<Route>();
-			}
 
 			var completedRoutes = new List<Route>();
 
-			var nextRoutes = _connectedStations.Where(r => r.StartStation == nextStation).ToList();
-			var endRoutes = _connectedStations.Where(r => r.StartStation == nextStation && r.EndStation == endStation).ToList();
+			var finishedRoutes = _connectedStations
+				.Where(r => r.StartStation == nextStation
+				            && r.EndStation == endStation).ToList();
 
-			foreach (var endRoute in endRoutes)
+			foreach (var finishedRoute in finishedRoutes)
 			{
 				var completedRoute = possibleRoute.Copy();
-				completedRoute.Add(endRoute);
+				completedRoute.Add(finishedRoute);
 				completedRoutes.Add(completedRoute);
 			}
 
+			var nextRoutes = _connectedStations.Where(r => r.StartStation == nextStation).ToList();
 			foreach (var nextRoute in nextRoutes)
 			{
 				var anotherPossibleRoute = possibleRoute.Copy();
 				anotherPossibleRoute.Add(nextRoute);
-				var routes = FindCompleteRoutes(endStation, nextRoute.EndStation, anotherPossibleRoute);
+
+				var routes = FindCompleteRoutes(nextRoute.EndStation, endStation, anotherPossibleRoute);
 				completedRoutes.AddRange(routes);
 			}
 
