@@ -1,18 +1,19 @@
 ﻿using NUnit.Framework;
+using Trains.Domain;
 
 namespace Trains.Tests
 {
 	[TestFixture]
-	public class DistanceCalculatorTests
+	public class SpecificRouteDistanceCalculatorTests
 	{
-		private DistanceCalculator _distanceCalculator;
+		private SpecificRouteDistanceCalculator _specificRouteDistanceCalculator;
 
 		[TestFixtureSetUp]
 		public void Setup()
 		{
 			var routingData = TestData.ConnectedStations;
 
-			_distanceCalculator = new DistanceCalculator(routingData);
+			_specificRouteDistanceCalculator = new SpecificRouteDistanceCalculator(routingData);
 		}
 
 		[TestCase("A-B-C", 9)]
@@ -21,7 +22,7 @@ namespace Trains.Tests
 		[TestCase("A-E-B-C-D", 22)]
 		public void Given_a_route_to_travel_then_calculate_the_total_distance(string route, int expectedDistance)
 		{
-			var actualDistance = _distanceCalculator.Calculate(route);
+			var actualDistance = _specificRouteDistanceCalculator.SumDistanceOf(route);
 
 			Assert.That(actualDistance, Is.EqualTo(expectedDistance));
 		}
@@ -29,7 +30,7 @@ namespace Trains.Tests
 		[Test]
 		public void Given_a_route_which_cannot_be_completed_then_throw_exception()
 		{
-			var exception = Assert.Throws<RouteNotFoundException>(() => _distanceCalculator.Calculate("A-E-D"));
+			var exception = Assert.Throws<RouteNotFoundException>(() => _specificRouteDistanceCalculator.SumDistanceOf("A-E-D"));
 
 			Assert.That(exception.Message, Is.EqualTo("NO SUCH ROUTE"));
 		}

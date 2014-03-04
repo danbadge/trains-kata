@@ -9,13 +9,13 @@ namespace Trains
 	public class TestScenarioRunner
 	{
 		private readonly TextWriter _console;
-		private readonly ICalculateDistances _distanceCalculator;
+		private readonly ICalculateDistancesOfSpecificRoutes _specificRouteDistanceCalculator;
 		private readonly IFindRoutes _routeFinder;
 
-		public TestScenarioRunner(TextWriter console, ICalculateDistances distanceCalculator, IFindRoutes routeFinder)
+		public TestScenarioRunner(TextWriter console, ICalculateDistancesOfSpecificRoutes specificRouteDistanceCalculator, IFindRoutes routeFinder)
 		{
 			_console = console;
-			_distanceCalculator = distanceCalculator;
+			_specificRouteDistanceCalculator = specificRouteDistanceCalculator;
 			_routeFinder = routeFinder;
 		}
 
@@ -25,11 +25,11 @@ namespace Trains
 
 			var scenarios = new List<Func<int>>
 				{
-					() => _distanceCalculator.Calculate("A-B-C"),
-					() => _distanceCalculator.Calculate("A-D"),
-					() => _distanceCalculator.Calculate("A-D-C"),
-					() => _distanceCalculator.Calculate("A-E-B-C-D"),
-					() => _distanceCalculator.Calculate("A-E-D"),
+					() => _specificRouteDistanceCalculator.SumDistanceOf("A-B-C"),
+					() => _specificRouteDistanceCalculator.SumDistanceOf("A-D"),
+					() => _specificRouteDistanceCalculator.SumDistanceOf("A-D-C"),
+					() => _specificRouteDistanceCalculator.SumDistanceOf("A-E-B-C-D"),
+					() => _specificRouteDistanceCalculator.SumDistanceOf("A-E-D"),
 					() => _routeFinder.GetRoutes("C", "C").WithMaxStops(3).Count,
 					() => _routeFinder.GetRoutes("A", "C").WithExactStops(4).Count,
 					() => _routeFinder.GetShortestRoute("A", "C").TotalDistance,

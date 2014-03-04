@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Trains.Domain;
 
-namespace Trains
+namespace Trains.Domain
 {
-	public interface ICalculateDistances
+	public interface ICalculateDistancesOfSpecificRoutes
 	{
-		int Calculate(string route);
+		int SumDistanceOf(string route);
 	}
 
-	public class DistanceCalculator : ICalculateDistances
+	public class SpecificRouteDistanceCalculator : ICalculateDistancesOfSpecificRoutes
 	{
 		private readonly List<ConnectedStations> _routingData;
 
-		public DistanceCalculator(List<ConnectedStations> routingData)
+		public SpecificRouteDistanceCalculator(List<ConnectedStations> routingData)
 		{
 			_routingData = routingData;
 		}
 
-		public int Calculate(string route)
+		public int SumDistanceOf(string route)
 		{
 			var stations = route.Split(Convert.ToChar("-"));
 
@@ -29,7 +28,7 @@ namespace Trains
 				var startStation = stations[i - 1];
 				var endStation =stations[i];
 
-				if (!_routingData.Any(r => r.StartStation == startStation && r.EndStation == endStation))
+				if (RouteCannotBeCompleted(startStation, endStation))
 					throw new RouteNotFoundException();
 
 				distance += _routingData.First(r => r.StartStation == startStation
@@ -37,6 +36,11 @@ namespace Trains
 			}
 
 			return distance;
+		}
+
+		private bool RouteCannotBeCompleted(string startStation, string endStation)
+		{
+			return !_routingData.Any(r => r.StartStation == startStation && r.EndStation == endStation);
 		}
 	}
 }

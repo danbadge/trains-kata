@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DistanceCalculatorTests.cs" />
+    <Compile Include="SpecificRouteDistanceCalculatorTests.cs" />
     <Compile Include="RouteFinderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutingDataStoreTests.cs" />

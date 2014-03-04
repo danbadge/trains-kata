@@ -34,7 +34,7 @@ namespace Trains
 
 		private static TestScenarioRunner CreateTestScenarioRunner(List<ConnectedStations> connectedStations)
 		{
-			var distanceCalculator = new DistanceCalculator(connectedStations);
+			var distanceCalculator = new SpecificRouteDistanceCalculator(connectedStations);
 			var routesFinder = new RouteFinder(connectedStations);
 			var testScenarioRunner = new TestScenarioRunner(Console.Out, distanceCalculator, routesFinder);
 			return testScenarioRunner;

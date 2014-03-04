@@ -13,7 +13,7 @@ namespace Trains.Tests
 	{
 		private TestScenarioRunner _testScenarioRunner;
 		private MockConsole _mockConsole;
-		private ICalculateDistances _distanceCalculator;
+		private ICalculateDistancesOfSpecificRoutes _distanceOfSpecificRoutesCalculator;
 		private IFindRoutes _routesFinder;
 
 		[SetUp]
@@ -21,13 +21,13 @@ namespace Trains.Tests
 		{
 			_mockConsole = new MockConsole();
 
-			_distanceCalculator = MockRepository.GenerateStub<ICalculateDistances>();
+			_distanceOfSpecificRoutesCalculator = MockRepository.GenerateStub<ICalculateDistancesOfSpecificRoutes>();
 			_routesFinder = MockRepository.GenerateStub<IFindRoutes>();
 
 			_routesFinder.Stub(r => r.GetRoutes(null, null)).IgnoreArguments().Return(new List<Route>());
 			_routesFinder.Stub(r => r.GetShortestRoute(null, null)).IgnoreArguments().Return(new Route());
 
-			_testScenarioRunner = new TestScenarioRunner(_mockConsole, _distanceCalculator, _routesFinder);
+			_testScenarioRunner = new TestScenarioRunner(_mockConsole, _distanceOfSpecificRoutesCalculator, _routesFinder);
 		}
 
 		[Test]
@@ -53,7 +53,7 @@ namespace Trains.Tests
 		[Test]
 		public void Should_output_error_message_if_distance_cannot_be_calculated()
 		{
-			_distanceCalculator.Stub(c => c.Calculate(Arg<string>.Is.Anything))
+			_distanceOfSpecificRoutesCalculator.Stub(c => c.SumDistanceOf(Arg<string>.Is.Anything))
 			                   .Throw(new RouteNotFoundException());
 
 			_testScenarioRunner.Run();
@@ -64,7 +64,7 @@ namespace Trains.Tests
 		[Test]
 		public void Should_output_distance_and_test_number_for_scenarios_1_to_5()
 		{
-			_distanceCalculator.Stub(c => c.Calculate(Arg<string>.Is.Anything))
+			_distanceOfSpecificRoutesCalculator.Stub(c => c.SumDistanceOf(Arg<string>.Is.Anything))
 							   .Return(43);
 
 			_testScenarioRunner.Run();
