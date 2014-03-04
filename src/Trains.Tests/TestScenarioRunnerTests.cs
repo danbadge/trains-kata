@@ -51,14 +51,6 @@ namespace Trains.Tests
 		}
 
 		[Test]
-		public void Should_calculate_the_distance_between_routes_5_times()
-		{
-			_testScenarioRunner.Run();
-
-			_distanceCalculator.AssertWasCalled(d => d.Calculate(Arg<String>.Is.Anything), d => d.Repeat.Times(5));
-		}
-
-		[Test]
 		public void Should_output_error_message_if_distance_cannot_be_calculated()
 		{
 			_distanceCalculator.Stub(c => c.Calculate(Arg<string>.Is.Anything))
@@ -78,15 +70,10 @@ namespace Trains.Tests
 			_testScenarioRunner.Run();
 
 			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #1: 43"));
-		}
-
-		[Test]
-		public void Should_get_available_routes_for_five_scenarios()
-		{
-			_testScenarioRunner.Run();
-
-			_routesFinder.AssertWasCalled(r => r.GetRoutes(Arg<string>.Is.Anything, Arg<string>.Is.Anything),
-			                             r => r.Repeat.Times(3));
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #2: 43"));
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #3: 43"));
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #4: 43"));
+			Assert.That(_mockConsole.GetOutput(), Is.StringContaining("Output #5: 43"));
 		}
 
 		[Test]

@@ -53,7 +53,7 @@ namespace Trains
 					"A-E-D"
 				};
 
-			var scenarioNumber = 0;
+			var scenarioNumber = 1;
 			foreach (var distanceScenario in distanceScenarios)
 			{
 				try
