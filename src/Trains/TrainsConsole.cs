@@ -10,7 +10,7 @@ namespace Trains
 		{
 			try
 			{
-				var fileLocation = args[0] ?? "routing-data.txt";
+				var fileLocation = args.Length > 0 ? args[0] : "routing-data.txt";
 
 				var connectedStations = LoadConnectedStationsFrom(fileLocation);
 				var testScenarioRunner = CreateTestScenarioRunner(connectedStations);

@@ -7,15 +7,8 @@ namespace Trains.Tests
 	[TestFixture]
 	public class TrainsConsoleTests
 	{
-		[SetUp]
-		public void SetUp()
-		{
-			var standardOutput = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
-			Console.SetOut(standardOutput);
-		}
-
 		[Test]
-		public void Should_output_error_messages_and_not_throw_exceptions_if_it_all_goes_wrong()
+		public void Should_output_error_messages_and_not_throw_exceptions_if_data_does_not_exist()
 		{
 			using (var consoleOutCatcher = new StringWriter())
 			{
@@ -29,9 +22,24 @@ namespace Trains.Tests
 		}
 
 		[Test]
-		public void Should_run_successfully_if_data_does_exist()
+		public void Should_run_successfully_if_data_does_not_exist()
 		{
-			Assert.DoesNotThrow(() => TrainsConsole.Main(new[] { "routing-data.txt" }));
+			using (var consoleOutCatcher = new StringWriter())
+			{
+				Console.SetOut(consoleOutCatcher);
+
+				TrainsConsole.Main(new string[]{});
+
+				Assert.That(consoleOutCatcher.ToString(), Is.StringStarting("Test Input"));
+				Assert.That(consoleOutCatcher.ToString(), Is.Not.StringContaining("An error occurred:"));
+			}
+		}
+
+		[TearDown]
+		public void Teardown()
+		{
+			var standardOutput = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
+			Console.SetOut(standardOutput);
 		}
 	}
 }
