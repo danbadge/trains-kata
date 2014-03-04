@@ -3,20 +3,29 @@ using Trains.Domain;
 
 namespace Trains
 {
-	internal class TrainsConsole
+	public class TrainsConsole
 	{
-		private static void Main(string[] args)
+		public static void Main(string[] args)
 		{
-			var routingDataStore = new RoutingDataStore();
-			routingDataStore.Load();
+			try
+			{
+				var fileLocation = args[0] ?? "routing-data.txt";
 
-			var connectedStations = routingDataStore.ConnectedStations;
-			var distanceCalculator = new DistanceCalculator(connectedStations);
-			var routesFinder = new RouteFinder(connectedStations);
+				var routingDataStore = new RoutingDataStore();
+				routingDataStore.LoadFrom(fileLocation);
 
-			var testScenarioRunner = new TestScenarioRunner(Console.Out, distanceCalculator, routesFinder);
+				var connectedStations = routingDataStore.ConnectedStations;
+				var distanceCalculator = new DistanceCalculator(connectedStations);
+				var routesFinder = new RouteFinder(connectedStations);
 
-			testScenarioRunner.Run();
+				var testScenarioRunner = new TestScenarioRunner(Console.Out, distanceCalculator, routesFinder);
+
+				testScenarioRunner.Run();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("An error occurred: {0} - {1}", ex.GetType(), ex.Message);
+			}
 
 			Console.ReadLine();
 		}

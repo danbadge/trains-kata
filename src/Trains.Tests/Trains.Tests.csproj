@@ -51,6 +51,7 @@
     <Compile Include="RoutingDataStoreTests.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="TestScenarioRunnerTests.cs" />
+    <Compile Include="TrainsConsoleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

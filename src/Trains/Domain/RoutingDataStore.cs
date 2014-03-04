@@ -10,11 +10,9 @@ namespace Trains.Domain
 	{
 		public List<ConnectedStations> ConnectedStations { get; private set; }
 
-		public void Load()
+		public void LoadFrom(string fileLocation)
 		{
 			ConnectedStations = new List<ConnectedStations>();
-
-			const string fileLocation = "routing-data.txt";
 
 			if (!File.Exists(fileLocation))
 				throw new FileNotFoundException("Routing data file could not be found");
@@ -22,7 +20,7 @@ namespace Trains.Domain
 			var routingData = File.ReadAllText(fileLocation);
 
 			if (String.IsNullOrEmpty(routingData))
-				throw new Exception("Routing data file contained no data");
+				throw new FileLoadException("Routing data file contained no data");
 
 			var routes = routingData.Split(Convert.ToChar(",")).Select(r => r.Trim()).ToArray();
 

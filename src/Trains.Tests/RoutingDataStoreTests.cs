@@ -14,7 +14,7 @@ namespace Trains.Tests
 		{
 			var routingDataStore = new RoutingDataStore();
 
-			var exception = Assert.Throws<FileNotFoundException>(routingDataStore.Load);
+			var exception = Assert.Throws<FileNotFoundException>(() => routingDataStore.LoadFrom("test-data.txt"));
 
 			Assert.That(exception.Message, Is.EqualTo("Routing data file could not be found"));
 		}
@@ -22,11 +22,11 @@ namespace Trains.Tests
 		[Test]
 		public void Should_throw_exception_if_routing_data_file_is_empty()
 		{
-			File.WriteAllText("routing-data.txt", "");
+			File.WriteAllText("test-data.txt", "");
 
 			var routingDataStore = new RoutingDataStore();
 
-			var exception = Assert.Throws<Exception>(routingDataStore.Load);
+			var exception = Assert.Throws<FileLoadException>(() => routingDataStore.LoadFrom("test-data.txt"));
 
 			Assert.That(exception.Message, Is.EqualTo("Routing data file contained no data"));
 		}
@@ -34,11 +34,11 @@ namespace Trains.Tests
 		[Test]
 		public void Should_populate_connected_stations_from_data_file()
 		{
-			File.WriteAllText("routing-data.txt", "AB4, BC5, DC6");
+			File.WriteAllText("test-data.txt", "AB4, BC5, DC6");
 
 			var routingDataStore = new RoutingDataStore();
 
-			routingDataStore.Load();
+			routingDataStore.LoadFrom("test-data.txt");
 
 			var firstConnectedStation = routingDataStore.ConnectedStations.First();
 			Assert.That(firstConnectedStation.StartStation, Is.EqualTo("A"));
@@ -51,7 +51,7 @@ namespace Trains.Tests
 		[TearDown]
 		public void TearDown()
 		{
-			File.Delete("routing-data.txt");
+			File.Delete("test-data.txt");
 		}
 	}
 }
