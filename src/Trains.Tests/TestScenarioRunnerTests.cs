@@ -62,7 +62,7 @@ namespace Trains.Tests
 		}
 
 		[Test]
-		public void Should_output_distance_and_test_number()
+		public void Should_output_distance_and_test_number_for_scenarios_1_to_5()
 		{
 			_distanceCalculator.Stub(c => c.Calculate(Arg<string>.Is.Anything))
 							   .Return(43);

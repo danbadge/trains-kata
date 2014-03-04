@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Trains.Domain;
@@ -22,9 +23,37 @@ namespace Trains
 		{
 			OutputTestScenarioDescriptions();
 
-			RunDistanceScenarios();
+			var scenarios = new List<Func<int>>
+				{
+					() => _distanceCalculator.Calculate("A-B-C"),
+					() => _distanceCalculator.Calculate("A-D"),
+					() => _distanceCalculator.Calculate("A-D-C"),
+					() => _distanceCalculator.Calculate("A-E-B-C-D"),
+					() => _distanceCalculator.Calculate("A-E-D"),
+					() => _routeFinder.GetRoutes("C", "C").WithMaxStops(3).Count,
+					() => _routeFinder.GetRoutes("A", "C").WithExactStops(4).Count,
+					() => _routeFinder.GetShortestRoute("A", "C").TotalDistance,
+					() => _routeFinder.GetShortestRoute("B", "B").TotalDistance,
+					() => _routeFinder.GetRoutes("C", "C").WithADistanceLessThan(30).Count
+				};
 
-			RunRouteFindingScenarios();
+			RunScenarios(scenarios);
+		}
+
+		private void RunScenarios(IList<Func<int>> scenarios)
+		{
+			for (var i = 1; i <= scenarios.Count; i++)
+			{
+				try
+				{
+					var result = scenarios[i - 1]();
+					OutputScenarioResult(i, result);
+				}
+				catch (RouteNotFoundException exception)
+				{
+					OutputScenarioResult(i, exception.Message);
+				}
+			}
 		}
 
 		private void OutputTestScenarioDescriptions()
@@ -40,51 +69,6 @@ namespace Trains
 			               "8. The length of the shortest route (in terms of distance to travel) from A to C.\n" +
 			               "9. The length of the shortest route (in terms of distance to travel) from B to B.\n" +
 			               "10.The number of different routes from C to C with a distance of less than 30.\n\n");
-		}
-
-		private void RunDistanceScenarios()
-		{
-			var distanceScenarios = new List<string>
-				{
-					"A-B-C",
-					"A-D",
-					"A-D-C",
-					"A-E-B-C-D",
-					"A-E-D"
-				};
-
-			var scenarioNumber = 1;
-			foreach (var distanceScenario in distanceScenarios)
-			{
-				try
-				{
-					var distance = _distanceCalculator.Calculate(distanceScenario);
-					OutputScenarioResult(scenarioNumber, distance);
-				}
-				catch (RouteNotFoundException exception)
-				{
-					OutputScenarioResult(scenarioNumber, exception.Message);
-				}
-				scenarioNumber++;
-			}
-		}
-
-		private void RunRouteFindingScenarios()
-		{
-			var routesWithMaxStops = _routeFinder.GetRoutes("C", "C").WithMaxStops(3).Count;
-			OutputScenarioResult(6, routesWithMaxStops);
-
-			var routesWithExactStops = _routeFinder.GetRoutes("A", "C").WithExactStops(4).Count;
-			OutputScenarioResult(7, routesWithExactStops);
-
-			var shortestDistance8 = _routeFinder.GetShortestRoute("A", "C").TotalDistance;
-			OutputScenarioResult(8, shortestDistance8);
-
-			var shortestDistance9 = _routeFinder.GetShortestRoute("B", "B").TotalDistance;
-			OutputScenarioResult(9, shortestDistance9);
-
-			var numberOfAvailableRoutes = _routeFinder.GetRoutes("C", "C").WithADistanceLessThan(30).Count;
-			OutputScenarioResult(10, numberOfAvailableRoutes);
 		}
 
 		private void OutputScenarioResult(int scenarioNumber, int results)
