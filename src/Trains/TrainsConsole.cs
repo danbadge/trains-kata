@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Trains.Domain;
 
 namespace Trains
@@ -11,14 +12,8 @@ namespace Trains
 			{
 				var fileLocation = args[0] ?? "routing-data.txt";
 
-				var routingDataStore = new RoutingDataStore();
-				routingDataStore.LoadFrom(fileLocation);
-
-				var connectedStations = routingDataStore.ConnectedStations;
-				var distanceCalculator = new DistanceCalculator(connectedStations);
-				var routesFinder = new RouteFinder(connectedStations);
-
-				var testScenarioRunner = new TestScenarioRunner(Console.Out, distanceCalculator, routesFinder);
+				var connectedStations = LoadConnectedStationsFrom(fileLocation);
+				var testScenarioRunner = CreateTestScenarioRunner(connectedStations);
 
 				testScenarioRunner.Run();
 			}
@@ -28,6 +23,21 @@ namespace Trains
 			}
 
 			Console.ReadLine();
+		}
+
+		private static List<ConnectedStations> LoadConnectedStationsFrom(string fileLocation)
+		{
+			var routingDataStore = new RoutingDataStore();
+			routingDataStore.LoadFrom(fileLocation);
+			return routingDataStore.ConnectedStations;
+		}
+
+		private static TestScenarioRunner CreateTestScenarioRunner(List<ConnectedStations> connectedStations)
+		{
+			var distanceCalculator = new DistanceCalculator(connectedStations);
+			var routesFinder = new RouteFinder(connectedStations);
+			var testScenarioRunner = new TestScenarioRunner(Console.Out, distanceCalculator, routesFinder);
+			return testScenarioRunner;
 		}
 	}
 }
