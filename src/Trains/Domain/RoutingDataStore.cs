@@ -18,10 +18,15 @@ namespace Trains.Domain
 				throw new FileNotFoundException("Routing data file could not be found");
 			
 			var routingData = File.ReadAllText(fileLocation);
-
+			
 			if (String.IsNullOrEmpty(routingData))
 				throw new FileLoadException("Routing data file contained no data");
 
+			ConvertTextToAListOfConnectedStations(routingData);
+		}
+
+		private void ConvertTextToAListOfConnectedStations(string routingData)
+		{
 			var routes = routingData.Split(Convert.ToChar(",")).Select(r => r.Trim()).ToArray();
 
 			foreach (var stations in routes.Select(route => route.ToCharArray()))
